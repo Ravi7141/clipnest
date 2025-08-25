@@ -74,10 +74,10 @@
         </dependency>
 
         <!-- Spring Security (if you want authentication later) -->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+        </dependency> -->
 
         <!-- Optional: JWT (for auth later) -->
         <dependency>
