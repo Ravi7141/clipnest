@@ -16,12 +16,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String getUserById(@PathVariable Long id) {
-        return "Hello world"; // TODO: Implement
+        return "Hello world";
     }
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return null; // TODO: Implement
+        return null;
+        // TODO: Implement
     }
 
     @DeleteMapping("/{id}")

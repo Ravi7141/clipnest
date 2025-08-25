@@ -41,15 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(Long id, User updatedUser) {
         Optional<User> existingUser = userRepository.findById(id);
-        if (existingUser.isPresent()) {
-            User userToUpdate = existingUser.get();
-            userToUpdate.setUsername(updatedUser.getUsername());
-            userToUpdate.setEmail(updatedUser.getEmail());
-            userToUpdate.setBio(updatedUser.getBio());
-            userToUpdate.setProfileImageUrl(updatedUser.getProfileImageUrl());
-            // Password update logic would be more complex
-            return userRepository.save(userToUpdate);
-        }
+
         return null; // Or throw a custom exception
     }
 

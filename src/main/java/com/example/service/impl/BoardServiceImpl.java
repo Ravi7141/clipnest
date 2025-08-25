@@ -25,9 +25,9 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board createBoard(Board board, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        board.setCreatedBy(user);
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//        board.setCreatedBy(user);
         return boardRepository.save(board);
     }
 
@@ -47,16 +47,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Board updateBoard(Long id, Board updatedBoard) {
         Board existingBoard = getBoardById(id);
-        existingBoard.setName(updatedBoard.getName());
-        existingBoard.setDescription(updatedBoard.getDescription());
+//        existingBoard.setName(updatedBoard.getName());
+//        existingBoard.setDescription(updatedBoard.getDescription());
         // Note: Ownership (createdBy) is not changed via update
         return boardRepository.save(existingBoard);
     }
 
     @Override
     public void deleteBoard(Long id) {
-        Board board = getBoardById(id);
-        boardRepository.delete(board);
+//        Board board = getBoardById(id);
+//        boardRepository.delete(board);
     }
 
     @Override
