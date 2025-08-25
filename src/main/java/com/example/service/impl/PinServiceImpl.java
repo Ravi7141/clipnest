@@ -27,7 +27,7 @@ public class PinServiceImpl implements PinService {
     public Pin createPin(Pin pin, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        pin.setCreatedBy(user);
+//        pin.setCreatedBy(user);
         return pinRepository.save(pin);
     }
 
@@ -46,9 +46,9 @@ public class PinServiceImpl implements PinService {
     public Pin updatePin(Long id, Pin updatedPin) {
         Pin existingPin = pinRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pin not found"));
-        existingPin.setTitle(updatedPin.getTitle());
-        existingPin.setDescription(updatedPin.getDescription());
-        existingPin.setImageUrl(updatedPin.getImageUrl());
+//        existingPin.setTitle(updatedPin.getTitle());
+//        existingPin.setDescription(updatedPin.getDescription());
+//        existingPin.setImageUrl(updatedPin.getImageUrl());
         return pinRepository.save(existingPin);
     }
 

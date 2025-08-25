@@ -34,10 +34,10 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Comment comment = new Comment();
-        comment.setText(text);
-        comment.setCreatedAt(LocalDateTime.now());
-        comment.setPin(pin);
-        comment.setCreatedBy(user);
+//        comment.setText(text);
+//        comment.setCreatedAt(LocalDateTime.now());
+//        comment.setPin(pin);
+//        comment.setCreatedBy(user);
 
         return commentRepository.save(comment);
     }
@@ -54,7 +54,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-        comment.setText(newText);
+//        comment.setText(newText);
         // Optionally update a last edited timestamp
         // comment.setUpdatedAt(LocalDateTime.now());
 
