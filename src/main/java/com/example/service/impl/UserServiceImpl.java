@@ -2,13 +2,12 @@ package com.example.service.impl;
 
 import com.example.model.User;
 import com.example.repository.UserRepository;
-import com.example.service.UserService; // Keep this import
+import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,21 +20,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(User user) {
-        // Basic implementation: save the user. Password encoding would be needed in a real app.
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User login(String email, String password) {
-        // TODO: Implement actual login logic with password verification
-        throw new UnsupportedOperationException("Login not implemented yet");
-    }
-
-    @Override
-    public User getUserById(Long id) {
+    public Optional<User> getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        return user.orElse(null); // Or throw a custom exception
+        return user; // Or throw a custom exception
     }
 
     @Override

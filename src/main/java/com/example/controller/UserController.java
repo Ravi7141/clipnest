@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -15,38 +16,37 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public String getUserById(@PathVariable Long id) {
-        return "Hello world";
+    public Optional<User> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return null;
-        // TODO: Implement
+        return userService.updateUser(id, updatedUser);
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        // TODO: Implement
+        userService.deleteUser(id);
     }
 
     @PostMapping("/{id}/follow")
     public void followUser(@PathVariable Long id, @RequestBody Long followId) {
-        // TODO: Implement
+        userService.followUser(id, followId);
     }
 
     @DeleteMapping("/{id}/unfollow")
     public void unfollowUser(@PathVariable Long id, @RequestBody Long unfollowId) {
-        // TODO: Implement
+        userService.unfollowUser(id, unfollowId);
     }
 
     @GetMapping("/{id}/followers")
     public List<User> getFollowers(@PathVariable Long id) {
-        return null; // TODO: Implement
+ return userService.getFollowers(id);
     }
 
     @GetMapping("/{id}/following")
     public List<User> getFollowing(@PathVariable Long id) {
-        return null; // TODO: Implement
+ return userService.getFollowing(id);
     }
 }
