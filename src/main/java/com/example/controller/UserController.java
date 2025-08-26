@@ -42,11 +42,11 @@ public class UserController {
 
     @GetMapping("/{id}/followers")
     public List<User> getFollowers(@PathVariable Long id) {
- return userService.getFollowers(id);
+        return userService.getFollowers(id);
     }
 
     @GetMapping("/{id}/following")
     public List<User> getFollowing(@PathVariable Long id) {
- return userService.getFollowing(id);
+        return userService.getFollowing(id);
     }
 }
