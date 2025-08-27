@@ -1,8 +1,12 @@
 package com.example.controller;
 
+import com.example.dto.SingleUser;
 import com.example.model.User;
+import com.example.dto.UsersFollowers;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,38 +19,77 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // ✅ Get user by id
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<SingleUser> getUserById(@PathVariable Long id) {
+        Optional<SingleUser> user = userService.getUserById(id);
+        return user.map(ResponseEntity::ok) // 200 OK
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()); // 404
     }
 
+    // ✅ Update user (kept as per your request)
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return userService.updateUser(id, updatedUser);
+    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        User user = userService.updateUser(id, updatedUser);
+        if (user != null) {
+            return ResponseEntity.ok("User_updated"); // 200 OK
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+        }
     }
 
+    // ✅ Delete user
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        boolean deleted = userService.deleteUser(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+        }
     }
 
+    // ✅ Follow user
     @PostMapping("/{id}/follow")
-    public void followUser(@PathVariable Long id, @RequestBody Long followId) {
-        userService.followUser(id, followId);
+    public ResponseEntity<String> followUser(@PathVariable Long id, @RequestParam Long followId) {
+        boolean followed = userService.followUser(id, followId);
+        if (followed) {
+            return ResponseEntity.ok("User followed successfully"); // 200 OK
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or follow target not found"); // 404
+        }
     }
 
+    // ✅ Unfollow user
     @DeleteMapping("/{id}/unfollow")
-    public void unfollowUser(@PathVariable Long id, @RequestBody Long unfollowId) {
-        userService.unfollowUser(id, unfollowId);
+    public ResponseEntity<String> unfollowUser(@PathVariable Long id, @RequestParam Long unfollowId) {
+        boolean unfollowed = userService.unfollowUser(id, unfollowId);
+        if (unfollowed) {
+            return ResponseEntity.ok("User unfollowed successfully"); // 200 OK
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or unfollow target not found"); // 404
+        }
     }
 
+    // ✅ Get followers
     @GetMapping("/{id}/followers")
-    public List<User> getFollowers(@PathVariable Long id) {
-        return userService.getFollowers(id);
+    public ResponseEntity<List<UsersFollowers>> getFollowers(@PathVariable Long id) {
+        List<UsersFollowers> followers = userService.getFollowers(id);
+        if (followers != null) {
+            return ResponseEntity.ok(followers); // 200 OK
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+        }
     }
 
+    // ✅ Get following
     @GetMapping("/{id}/following")
-    public List<User> getFollowing(@PathVariable Long id) {
-        return userService.getFollowing(id);
+    public ResponseEntity<List<UsersFollowers>> getFollowing(@PathVariable Long id) {
+        List<UsersFollowers> following = userService.getFollowing(id);
+        if (following != null) {
+            return ResponseEntity.ok(following); // 200 OK
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+        }
     }
 }

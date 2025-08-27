@@ -1,14 +1,12 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,26 +32,30 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Lob // For potentially longer text
+    @Column(columnDefinition = "TEXT")
     private String bio;
+
 
     private String profileImageUrl;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    // Owning side: following
+    @ManyToMany(fetch = FetchType.LAZY , cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "user_followers",
-            joinColumns = @JoinColumn(name = "following_id"),
-            inverseJoinColumns = @JoinColumn(name = "follower_id")
+            joinColumns = @JoinColumn(name = "follower_id"),       // who follows
+            inverseJoinColumns = @JoinColumn(name = "following_id") // who is being followed
     )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<User> following = new HashSet<>();
+
+    // Inverse side: followers
+    @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
     private Set<User> followers = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_followers",
-            joinColumns = @JoinColumn(name = "follower_id"),
-            inverseJoinColumns = @JoinColumn(name = "following_id")
-    )
-    private Set<User> following = new HashSet<>();
 
     // Add convenience methods for managing followers and following if needed
 }
