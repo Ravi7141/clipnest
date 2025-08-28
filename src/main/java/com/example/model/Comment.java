@@ -21,7 +21,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 @Builder
 public class Comment {
     @Id
-    private Long id;
+    private String id;
     private String text;
     private LocalDateTime createdAt;
 }

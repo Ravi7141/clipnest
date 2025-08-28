@@ -23,8 +23,8 @@ public class Board {
     private String name;
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
     private User createdBy;
 
     @DBRef

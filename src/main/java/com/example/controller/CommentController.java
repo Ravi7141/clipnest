@@ -11,8 +11,12 @@ import java.util.List;
 @RequestMapping("/api/comments")
 public class CommentController {
 
-    @Autowired
+
     private CommentService commentService;
+
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @PostMapping("/pin/{pinId}/user/{userId}")
     public Comment addComment(@PathVariable Long pinId, @PathVariable Long userId, @RequestBody String text) {

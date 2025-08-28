@@ -35,14 +35,14 @@ public class UserServiceImpl implements UserService {
 
             // Only IDs to avoid recursion
             dto.setFollowerIds((
-                user.getFollowers().stream()
-                .map(String::valueOf)
-                .collect(Collectors.toSet())
+                    user.getFollowers().stream()
+                            .map(String::valueOf)
+                            .collect(Collectors.toSet())
             ));
             dto.setFollowingIds((
-                user.getFollowing().stream()
-                .map(String::valueOf)
-                .collect(Collectors.toSet())
+                    user.getFollowing().stream()
+                            .map(String::valueOf)
+                            .collect(Collectors.toSet())
             ));
 
             return Optional.of(dto);
@@ -73,19 +73,19 @@ public class UserServiceImpl implements UserService {
             User user = userOpt.get();
 
             // Remove this user's ID from the followers list of users they were following
- user.getFollowing().forEach(followingId -> {
+            user.getFollowing().forEach(followingId -> {
                 userRepository.findById(followingId).ifPresent(followingUser -> {
-                followingUser.getFollowers().remove(user.getId());
-                userRepository.save(followingUser);
-            });
+                    followingUser.getFollowers().remove(user.getId());
+                    userRepository.save(followingUser);
+                });
             });
 
             // Remove this user's ID from the following list of users who were following them
             user.getFollowers().forEach(followerId -> {
                 userRepository.findById(followerId).ifPresent(follower -> {
-                follower.getFollowing().remove(user.getId());
-                userRepository.save(follower);
-            });
+                    follower.getFollowing().remove(user.getId());
+                    userRepository.save(follower);
+                });
             });
 
             userRepository.delete(user); // Now safe
@@ -103,8 +103,8 @@ public class UserServiceImpl implements UserService {
             User user = userOpt.get();
             User follow = followOpt.get();
 
- user.getFollowing().add(follow.getId());
- follow.getFollowers().add(user.getId());
+            user.getFollowing().add(follow.getId());
+            follow.getFollowers().add(user.getId());
 
             userRepository.save(user); // Save both users to update their lists
             userRepository.save(follow); // Save both users to update their lists
@@ -122,8 +122,8 @@ public class UserServiceImpl implements UserService {
             User user = userOpt.get();
             User unfollow = unfollowOpt.get();
 
- user.getFollowing().remove(unfollow.getId());
- unfollow.getFollowers().remove(user.getId());
+            user.getFollowing().remove(unfollow.getId());
+            unfollow.getFollowers().remove(user.getId());
 
             userRepository.save(user); // Save both users to update their lists
             userRepository.save(unfollow); // Save both users to update their lists
@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
         List<UsersFollowers> followersList = new ArrayList<>();
         user.getFollowers().forEach(followerId -> {
             userRepository.findById(followerId).ifPresent(follower -> {
- followersList.add(new UsersFollowers(follower.getId(), follower.getUsername()));
+                followersList.add(new UsersFollowers(follower.getId(), follower.getUsername()));
             });
         });
 
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
         List<UsersFollowers> followersList = new ArrayList<>();
         user.getFollowing().forEach(followingId -> {
             userRepository.findById(followingId).ifPresent(followingUser -> {
- followersList.add(new UsersFollowers(followingUser.getId(), followingUser.getUsername()));
+                followersList.add(new UsersFollowers(followingUser.getId(), followingUser.getUsername()));
             });
         });
 

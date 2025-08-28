@@ -25,9 +25,9 @@ public class PinServiceImpl implements PinService {
     }
 
     @Override
-    public Pin createPin(Pin pin, Long userId) {
+    public Pin createPin(Pin pin, String userId) {
         // In MongoDB, we might store the user ID directly in the Pin document
-        pin.setCreatedBy(userId.toString()); // Assuming user ID is stored as String in Pin
+//        pin.setCreatedBy(userId.toString()); // Assuming user ID is stored as String in Pin
         return pinRepository.save(pin);
     }
 
@@ -37,13 +37,13 @@ public class PinServiceImpl implements PinService {
     }
 
     @Override
-    public Pin getPinById(Long id) {
+    public Pin getPinById(String id) {
         return pinRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pin not found"));
     }
 
     @Override
-    public Pin updatePin(Long id, Pin updatedPin) {
+    public Pin updatePin(String id, Pin updatedPin) {
         Pin existingPin = pinRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pin not found"));
         existingPin.setTitle(updatedPin.getTitle());
@@ -53,37 +53,40 @@ public class PinServiceImpl implements PinService {
     }
 
     @Override
-    public void deletePin(Long id) {
+    public void deletePin(String id) {
         pinRepository.deleteById(id);
     }
 
     @Override
-    public List<Pin> getPinsByUser(Long userId) {
- return pinRepository.findByCreatedBy(userId.toString()); // Assuming user ID is stored as String
+    public List<Pin> getPinsByUser(String userId) {
+// return pinRepository.findByCreatedBy(userId);
+// Assuming user ID is stored as String
+        return null;
     }
 
     @Override
     public List<Pin> searchPins(String keyword) {
- return pinRepository.findByTitleContainingIgnoreCase(keyword);
+// return pinRepository.findByTitleContainingIgnoreCase(keyword);
+        return null;
     }
 
     @Override
-    public void likePin(Long pinId, Long userId) {
+    public void likePin(String pinId, String userId) {
         throw new UnsupportedOperationException("likePin not implemented yet");
     }
 
     @Override
-    public void unlikePin(Long pinId, Long userId) {
+    public void unlikePin(String pinId, String userId) {
         throw new UnsupportedOperationException("unlikePin not implemented yet");
     }
 
     @Override
-    public void savePinToBoard(Long pinId, Long boardId) {
+    public void savePinToBoard(String pinId, String boardId) {
         throw new UnsupportedOperationException("savePinToBoard not implemented yet");
     }
 
     @Override
-    public void removePinFromBoard(Long pinId, Long boardId) {
+    public void removePinFromBoard(String pinId, String boardId) {
         throw new UnsupportedOperationException("removePinFromBoard not implemented yet");
     }
 }

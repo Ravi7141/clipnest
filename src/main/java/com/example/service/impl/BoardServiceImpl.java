@@ -25,15 +25,15 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public Board createBoard(Board board, Long userId) {
+    public Board createBoard(Board board, String userId) {
         // In MongoDB, we can embed or reference the user ID.
         // For simplicity, let's assume we store the user ID in the Board document.
-        board.setCreatedBy(userId.toString()); // Store user ID as String in Board
+//        board.setCreatedBy(userId); // Store user ID as String in Board
         return boardRepository.save(board);
     }
 
     @Override
-    public List<Board> getBoardsByUser(Long userId) {
+    public List<Board> getBoardsByUser(String userId) {
         return boardRepository.findByCreatedBy(userId.toString());
     }
 
@@ -53,7 +53,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void deleteBoard(Long id) {
+    public void deleteBoard(String id) {
 //        Board board = getBoardById(id);
 //        boardRepository.delete(board);
     }

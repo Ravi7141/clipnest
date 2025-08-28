@@ -1,4 +1,5 @@
 package com.example.service.impl;
+
 import com.example.model.Comment;
 import com.example.model.Pin;
 // import com.example.model.User; // Assuming User is not directly embedded in Comment and will be referenced by ID
@@ -29,42 +30,42 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment addComment(Long pinId, Long userId, String text) {
+    public Comment addComment(String pinId, String userId, String text) {
         Pin pin = pinRepository.findById(String.valueOf(pinId)) // MongoDB IDs are typically Strings
                 .orElseThrow(() -> new RuntimeException("Pin not found"));
 //        User user = userRepository.findById(userId) // Assuming User is not directly embedded in Comment and will be referenced by ID
 //                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Comment comment = new Comment();
- comment.setText(text);
- comment.setCreatedAt(LocalDateTime.now());
- comment.setPinId(pin.getId()); // Store the Pin ID
- comment.setCreatedByUserId(String.valueOf(userId)); // Store the User ID
+// comment.setText(text);
+// comment.setCreatedAt(LocalDateTime.now());
+// comment.setPinId(pin.getId()); // Store the Pin ID
+// comment.setCreatedByUserId(String.valueOf(userId)); // Store the User ID
 
         return commentRepository.save(comment);
     }
 
     @Override
-    public List<Comment> getCommentsByPin(Long pinId) {
- Pin pin = pinRepository.findById(String.valueOf(pinId)) // MongoDB IDs are typically Strings
+    public List<Comment> getCommentsByPin(String pinId) {
+        Pin pin = pinRepository.findById(String.valueOf(pinId)) // MongoDB IDs are typically Strings
                 .orElseThrow(() -> new RuntimeException("Pin not found"));
- return commentRepository.findByPinId(pin.getId()); // Find comments by Pin ID
+        return null; // Find comments by Pin ID
     }
 
     @Override
-    public Comment updateComment(Long commentId, String newText) {
+    public Comment updateComment(String commentId, String newText) {
         Comment comment = commentRepository.findById(String.valueOf(commentId)) // MongoDB IDs are typically Strings
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
- comment.setText(newText);
+        comment.setText(newText);
         // Optionally update a last edited timestamp
- comment.setUpdatedAt(LocalDateTime.now());
+//        comment.setUpdatedAt(LocalDateTime.now());
 
         return commentRepository.save(comment);
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public void deleteComment(String commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found")); // MongoDB IDs are typically Strings
         commentRepository.delete(comment);

@@ -4,15 +4,15 @@ import com.example.model.Pin;
 import java.util.List;
 
 public interface PinService {
-    Pin createPin(Pin pin, Long userId);
+    Pin createPin(Pin pin, String userId);
     List<Pin> getAllPins();
-    Pin getPinById(Long id);
-    Pin updatePin(Long id, Pin updatedPin);
-    void deletePin(Long id);
-    List<Pin> getPinsByUser(Long userId);
+    Pin getPinById(String id);
+    Pin updatePin(String id, Pin updatedPin);
+    void deletePin(String id);
+    List<Pin> getPinsByUser(String userId);
     List<Pin> searchPins(String keyword);
-    void likePin(Long pinId, Long userId);
-    void unlikePin(Long pinId, Long userId);
-    void savePinToBoard(Long pinId, Long boardId);
-    void removePinFromBoard(Long pinId, Long boardId);
+    void likePin(String pinId, String userId);
+    void unlikePin(String pinId, String userId);
+    void savePinToBoard(String pinId, String boardId);
+    void removePinFromBoard(String pinId, String boardId);
 }
