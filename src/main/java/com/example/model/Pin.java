@@ -1,14 +1,8 @@
 package com.example.model;
 
-import jakarta.persistence.*;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,36 +10,28 @@ import java.util.List;
 import java.util.Set;
 
 import com.example.model.User;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "pins")
+@Document(collection = "pins")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Pin {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String title;
     private String description;
     private String imageUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User createdBy;
+    @DBRef
+    private User createdBy; // Assuming User will also be a Document
 
-    @ManyToMany(mappedBy = "pins")
-    private Set<Board> boards = new HashSet<>();
+    private Set<String> boardIds = new HashSet<>(); // Store Board IDs
 
-    @OneToMany(mappedBy = "pin", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    @DBRef
+    private List<Comment> comments = new ArrayList<>(); // Using DBRef for simplicity, consider embedding or ID list for performance
 
-    @ManyToMany
-    @JoinTable(
-        name = "pin_likes",
-        joinColumns = @JoinColumn(name = "pin_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> likedBy = new HashSet<>();
+    private Set<String> likedByUsers = new HashSet<>(); // Store User IDs of likers
 }

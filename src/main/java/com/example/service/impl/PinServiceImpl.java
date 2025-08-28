@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 import com.example.model.Pin;
+import com.example.model.Board;
 import com.example.model.User;
 import com.example.repository.PinRepository;
 import com.example.repository.UserRepository;
@@ -25,15 +26,14 @@ public class PinServiceImpl implements PinService {
 
     @Override
     public Pin createPin(Pin pin, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-//        pin.setCreatedBy(user);
+        // In MongoDB, we might store the user ID directly in the Pin document
+        pin.setCreatedBy(userId.toString()); // Assuming user ID is stored as String in Pin
         return pinRepository.save(pin);
     }
 
     @Override
     public List<Pin> getAllPins() {
-        return pinRepository.findAll();
+ return pinRepository.findAll();
     }
 
     @Override
@@ -46,9 +46,9 @@ public class PinServiceImpl implements PinService {
     public Pin updatePin(Long id, Pin updatedPin) {
         Pin existingPin = pinRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pin not found"));
-//        existingPin.setTitle(updatedPin.getTitle());
-//        existingPin.setDescription(updatedPin.getDescription());
-//        existingPin.setImageUrl(updatedPin.getImageUrl());
+        existingPin.setTitle(updatedPin.getTitle());
+        existingPin.setDescription(updatedPin.getDescription());
+        existingPin.setImageUrl(updatedPin.getImageUrl());
         return pinRepository.save(existingPin);
     }
 
@@ -59,14 +59,12 @@ public class PinServiceImpl implements PinService {
 
     @Override
     public List<Pin> getPinsByUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return pinRepository.findByCreatedBy(user);
+ return pinRepository.findByCreatedBy(userId.toString()); // Assuming user ID is stored as String
     }
 
     @Override
     public List<Pin> searchPins(String keyword) {
-        return pinRepository.findByTitleContaining(keyword);
+ return pinRepository.findByTitleContainingIgnoreCase(keyword);
     }
 
     @Override

@@ -8,11 +8,11 @@ import java.util.Optional;
 import java.util.List;
 
 public interface UserService {
-    Optional<SingleUser> getUserById(Long id);
-    User updateUser(Long id, User updatedUser);
-    boolean deleteUser(Long id);           // changed from void → boolean
-    boolean followUser(Long userId, Long followId);     // changed from void → boolean
-    boolean unfollowUser(Long userId, Long unfollowId); // changed from void → boolean
-    List<UsersFollowers> getFollowers(Long userId);
-    List<UsersFollowers> getFollowing(Long userId);
+    Optional<SingleUser> getUserById(String id);
+    User updateUser(String id, User updatedUser);
+    boolean deleteUser(String id);           // changed from void → boolean
+    boolean followUser(String userId, String followId);     // changed from void → boolean
+    boolean unfollowUser(String userId, String unfollowId); // changed from void → boolean
+    List<UsersFollowers> getFollowers(String userId);
+    List<UsersFollowers> getFollowing(String userId);
 }

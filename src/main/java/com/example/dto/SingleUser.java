@@ -10,8 +10,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SingleUser {
-    private Long id;
+    private String id;
     private String username;
-    private Set<Long> followingIds;
-    private Set<Long> followerIds;
+    private Set<String> followingIds;
+    private Set<String> followerIds;
 }

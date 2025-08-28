@@ -1,12 +1,12 @@
 package com.example.service.impl;
 
 import com.example.model.Board;
-import com.example.model.User;
 import com.example.repository.BoardRepository;
 import com.example.repository.UserRepository;
 import com.example.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,32 +24,31 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public Board createBoard(Board board, Long userId) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//        board.setCreatedBy(user);
+        // In MongoDB, we can embed or reference the user ID.
+        // For simplicity, let's assume we store the user ID in the Board document.
+        board.setCreatedBy(userId.toString()); // Store user ID as String in Board
         return boardRepository.save(board);
     }
 
     @Override
     public List<Board> getBoardsByUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return boardRepository.findByCreatedBy(user);
+        return boardRepository.findByCreatedBy(userId.toString());
     }
 
     @Override
-    public Board getBoardById(Long id) {
+    public Board getBoardById(String id) {
         return boardRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
     }
 
     @Override
-    public Board updateBoard(Long id, Board updatedBoard) {
+    @Transactional
+    public Board updateBoard(String id, Board updatedBoard) {
         Board existingBoard = getBoardById(id);
-//        existingBoard.setName(updatedBoard.getName());
-//        existingBoard.setDescription(updatedBoard.getDescription());
-        // Note: Ownership (createdBy) is not changed via update
+        existingBoard.setName(updatedBoard.getName());
+        existingBoard.setDescription(updatedBoard.getDescription());
         return boardRepository.save(existingBoard);
     }
 
@@ -60,13 +59,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void addPinToBoard(Long boardId, Long pinId) {
+    public void addPinToBoard(String boardId, String pinId) {
         // TODO: Implement adding a pin to a board
         throw new UnsupportedOperationException("Adding pin to board not yet implemented");
     }
 
     @Override
-    public void removePinFromBoard(Long boardId, Long pinId) {
+    public void removePinFromBoard(String boardId, String pinId) {
         // TODO: Implement removing a pin from a board
         throw new UnsupportedOperationException("Removing pin from board not yet implemented");
     }

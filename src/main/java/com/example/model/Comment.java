@@ -7,28 +7,21 @@ import lombok.Data;
 
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 import com.example.model.User;
-@Entity
-@Table(name = "comments")
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
+@Document(collection = "comments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
     private LocalDateTime createdAt;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User createdBy;
-
-    @ManyToOne
-    @JoinColumn(name = "pin_id", nullable = false)
-    private Pin pin;
 }

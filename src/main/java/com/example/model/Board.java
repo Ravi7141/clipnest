@@ -5,20 +5,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "boards")
+@Document(collection = "boards")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Board {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String name;
     private String description;
 
@@ -26,11 +27,6 @@ public class Board {
     @JoinColumn(name = "user_id", nullable = false)
     private User createdBy;
 
-    @ManyToMany
-    @JoinTable(
-        name = "board_pins",
-        joinColumns = @JoinColumn(name = "board_id"),
-        inverseJoinColumns = @JoinColumn(name = "pin_id")
-    )
+    @DBRef
     private Set<Pin> pins = new HashSet<>();
 }

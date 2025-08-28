@@ -21,7 +21,7 @@ public class UserController {
 
     // ✅ Get user by id
     @GetMapping("/{id}")
-    public ResponseEntity<SingleUser> getUserById(@PathVariable Long id) {
+    public ResponseEntity<SingleUser> getUserById(@PathVariable String id) {
         Optional<SingleUser> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok) // 200 OK
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()); // 404
@@ -29,7 +29,7 @@ public class UserController {
 
     // ✅ Update user (kept as per your request)
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    public ResponseEntity<String> updateUser(@PathVariable String id, @RequestBody User updatedUser) {
         User user = userService.updateUser(id, updatedUser);
         if (user != null) {
             return ResponseEntity.ok("User_updated"); // 200 OK
@@ -40,7 +40,7 @@ public class UserController {
 
     // ✅ Delete user
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         boolean deleted = userService.deleteUser(id);
         if (deleted) {
             return ResponseEntity.noContent().build(); // 204 No Content
@@ -51,7 +51,7 @@ public class UserController {
 
     // ✅ Follow user
     @PostMapping("/{id}/follow")
-    public ResponseEntity<String> followUser(@PathVariable Long id, @RequestParam Long followId) {
+    public ResponseEntity<String> followUser(@PathVariable String id, @RequestParam String followId) {
         boolean followed = userService.followUser(id, followId);
         if (followed) {
             return ResponseEntity.ok("User followed successfully"); // 200 OK
@@ -62,7 +62,7 @@ public class UserController {
 
     // ✅ Unfollow user
     @DeleteMapping("/{id}/unfollow")
-    public ResponseEntity<String> unfollowUser(@PathVariable Long id, @RequestParam Long unfollowId) {
+    public ResponseEntity<String> unfollowUser(@PathVariable String id, @RequestParam String unfollowId) {
         boolean unfollowed = userService.unfollowUser(id, unfollowId);
         if (unfollowed) {
             return ResponseEntity.ok("User unfollowed successfully"); // 200 OK
@@ -73,7 +73,7 @@ public class UserController {
 
     // ✅ Get followers
     @GetMapping("/{id}/followers")
-    public ResponseEntity<List<UsersFollowers>> getFollowers(@PathVariable Long id) {
+    public ResponseEntity<List<UsersFollowers>> getFollowers(@PathVariable String id) {
         List<UsersFollowers> followers = userService.getFollowers(id);
         if (followers != null) {
             return ResponseEntity.ok(followers); // 200 OK
@@ -84,7 +84,7 @@ public class UserController {
 
     // ✅ Get following
     @GetMapping("/{id}/following")
-    public ResponseEntity<List<UsersFollowers>> getFollowing(@PathVariable Long id) {
+    public ResponseEntity<List<UsersFollowers>> getFollowing(@PathVariable String id) {
         List<UsersFollowers> following = userService.getFollowing(id);
         if (following != null) {
             return ResponseEntity.ok(following); // 200 OK
