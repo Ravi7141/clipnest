@@ -11,8 +11,8 @@ public interface PinService {
     void deletePin(String id);
     List<Pin> getPinsByUser(String userId);
     List<Pin> searchPins(String keyword);
-    void likePin(String pinId, String userId);
-    void unlikePin(String pinId, String userId);
-    void savePinToBoard(String pinId, String boardId);
-    void removePinFromBoard(String pinId, String boardId);
+    Pin likePin(String pinId, String userId);
+    Pin unlikePin(String pinId, String userId);
+    Pin savePinToBoard(String pinId, String boardId);
+    Pin removePinFromBoard(String pinId, String boardId);
 }

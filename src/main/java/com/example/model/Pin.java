@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.example.model.User;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "pins")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Pin {
     @Id

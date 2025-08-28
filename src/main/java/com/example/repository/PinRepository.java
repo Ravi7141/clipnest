@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface PinRepository extends MongoRepository<Pin, String> {
     List<Pin> findByCreatedBy(User user);
-    List<Pin> findByTitleContaining(String key);
+    List<Pin> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String title, String description);
+
 }
