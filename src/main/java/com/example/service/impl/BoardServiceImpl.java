@@ -1,7 +1,9 @@
 package com.example.service.impl;
 
 import com.example.model.Board;
+import com.example.model.Pin;
 import com.example.repository.BoardRepository;
+import com.example.repository.PinRepository;
 import com.example.repository.UserRepository;
 import com.example.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class BoardServiceImpl implements BoardService {
     private final UserRepository userRepository;
 
     @Autowired
+    private PinRepository pinRepository;
+
+    @Autowired
     public BoardServiceImpl(BoardRepository boardRepository, UserRepository userRepository) {
         this.boardRepository = boardRepository;
         this.userRepository = userRepository;
@@ -28,13 +33,13 @@ public class BoardServiceImpl implements BoardService {
     public Board createBoard(Board board, String userId) {
         // In MongoDB, we can embed or reference the user ID.
         // For simplicity, let's assume we store the user ID in the Board document.
-//        board.setCreatedBy(userId); // Store user ID as String in Board
+        board.setCreatedBy(userId); // Store user ID as String in Board
         return boardRepository.save(board);
     }
 
     @Override
     public List<Board> getBoardsByUser(String userId) {
-        return boardRepository.findByCreatedBy(userId.toString());
+        return boardRepository.findByCreatedBy(userId);
     }
 
     @Override
@@ -47,26 +52,15 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public Board updateBoard(String id, Board updatedBoard) {
         Board existingBoard = getBoardById(id);
-        existingBoard.setName(updatedBoard.getName());
-        existingBoard.setDescription(updatedBoard.getDescription());
+        existingBoard.setName((updatedBoard.getName()!=null) ? updatedBoard.getName() : existingBoard.getName());
+        existingBoard.setDescription((updatedBoard.getDescription()!=null) ? updatedBoard.getDescription() : existingBoard.getDescription());
         return boardRepository.save(existingBoard);
     }
 
     @Override
     public void deleteBoard(String id) {
-//        Board board = getBoardById(id);
-//        boardRepository.delete(board);
+        Board board = getBoardById(id);
+        boardRepository.delete(board);
     }
 
-    @Override
-    public void addPinToBoard(String boardId, String pinId) {
-        // TODO: Implement adding a pin to a board
-        throw new UnsupportedOperationException("Adding pin to board not yet implemented");
-    }
-
-    @Override
-    public void removePinFromBoard(String boardId, String pinId) {
-        // TODO: Implement removing a pin from a board
-        throw new UnsupportedOperationException("Removing pin from board not yet implemented");
-    }
 }

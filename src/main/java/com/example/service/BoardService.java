@@ -9,6 +9,6 @@ public interface BoardService {
     Board getBoardById(String id);
     Board updateBoard(String id, Board updatedBoard);
     void deleteBoard(String id);
-    void addPinToBoard(String boardId, String pinId);
-    void removePinFromBoard(String boardId, String pinId);
+//    Board addPinToBoard(String boardId, String pinId);
+//    Board removePinFromBoard(String boardId, String pinId);
 }
