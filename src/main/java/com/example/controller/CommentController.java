@@ -2,8 +2,10 @@ package com.example.controller;
 
 import com.example.model.Comment;
 import com.example.service.CommentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -19,25 +21,29 @@ public class CommentController {
     }
 
     @PostMapping("/pin/{pinId}/user/{userId}")
-    public Comment addComment(@PathVariable Long pinId, @PathVariable Long userId, @RequestBody String text) {
-        // Method body will be implemented later
-        return null;
+    public ResponseEntity<Comment> addComment(@PathVariable String pinId, @PathVariable String userId, @RequestBody String text) {
+        Comment comment = commentService.addComment(pinId, userId, text);
+        return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
 
     @GetMapping("/pin/{pinId}")
-    public List<Comment> getCommentsByPin(@PathVariable Long pinId) {
-        // Method body will be implemented later
-        return null;
+    public ResponseEntity<List<Comment>> getCommentsByPin(@PathVariable String pinId) {
+        List<Comment> comments = commentService.getCommentsByPin(pinId);
+        if (comments.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public Comment updateComment(@PathVariable Long id, @RequestBody String newText) {
-        // Method body will be implemented later
-        return null;
+    public ResponseEntity<Comment> updateComment(@PathVariable String id, @RequestBody String newText) {
+        Comment updatedComment = commentService.updateComment(id, newText);
+        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Long id) {
-        // Method body will be implemented later
+    public ResponseEntity<Void> deleteComment(@PathVariable String id) {
+        commentService.deleteComment(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

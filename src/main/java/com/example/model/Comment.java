@@ -24,4 +24,6 @@ public class Comment {
     private String id;
     private String text;
     private LocalDateTime createdAt;
+    private String pinId;
+    private String createdByUserId;
 }
