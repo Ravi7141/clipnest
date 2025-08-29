@@ -42,7 +42,10 @@ public class CommentServiceImpl implements CommentService {
         comment.setPinId(pin.getId()); // Store the Pin ID
         comment.setCreatedByUserId(user.getId()); // Store the User ID
 
-        return commentRepository.save(comment);
+        Comment savedComment = commentRepository.save(comment);
+        pin.getComments().add(savedComment); // Add comment to Pin's comment list if needed
+        pinRepository.save(pin);
+        return savedComment;
     }
 
     @Override
@@ -62,6 +65,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(String commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+        Pin pin = pinRepository.findById(comment.getPinId())
+                .orElseThrow(() -> new RuntimeException("Pin not found"));
+        pin.getComments().removeIf(c -> c.getId().equals(commentId));
+        pinRepository.save(pin);
         commentRepository.deleteById(commentId);
     }
 }
