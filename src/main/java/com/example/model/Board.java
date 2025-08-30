@@ -25,7 +25,7 @@ public class Board {
 
 //    @ManyToOne
 //    @JoinColumn(name = "user_id", nullable = false)
-    private User createdBy;
+    private String createdBy;
 
     @DBRef
     private Set<Pin> pins = new HashSet<>();

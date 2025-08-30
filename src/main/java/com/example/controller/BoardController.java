@@ -1,44 +1,72 @@
 package com.example.controller;
 
+import com.example.model.Board;
+import com.example.model.Pin;
+import com.example.repository.BoardRepository;
+import org.apache.tomcat.util.http.parser.HttpParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.service.BoardService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/boards")
 public class BoardController {
 
-    @PostMapping
-    public void createBoard() {
-        // Method stub for createBoard
+    @Autowired
+    private BoardService boardService;
+
+    @Autowired
+    private BoardRepository boardRepository;
+
+    @PostMapping("/create/{userId}")
+    public ResponseEntity<?> createBoard(@RequestBody Board board, @PathVariable String userId) {
+        Board savedBoard = boardService.createBoard(board, userId);
+        if (savedBoard != null) {
+            return new ResponseEntity<>(savedBoard, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/user/{userId}")
-    public void getBoardsByUser(@PathVariable Long userId) {
-        // Method stub for getBoardsByUser
+    public ResponseEntity<?> getBoardsByUser(@PathVariable String userId) {
+        List<Board> list = boardService.getBoardsByUser(userId);
+        if(list != null)
+            return new ResponseEntity<>(list, HttpStatus.FOUND);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{id}")
-    public void getBoardById(@PathVariable Long id) {
-        // Method stub for getBoardById
+    public ResponseEntity<?> getBoardById(@PathVariable String id) {
+        Board board = boardService.getBoardById(id);
+        if(board!=null)
+            return new ResponseEntity<>(board, HttpStatus.FOUND);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
-    public void updateBoard(@PathVariable Long id) {
-        // Method stub for updateBoard
+    public ResponseEntity<?> updateBoard(@PathVariable String id, @RequestBody Board board) {
+        Board updateBoard = boardService.updateBoard(id, board);
+        if(updateBoard!=null)
+            return new ResponseEntity<>(updateBoard, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBoard(@PathVariable Long id) {
-        // Method stub for deleteBoard
-    }
-
-    @PostMapping("/{id}/pins/{pinId}")
-    public void addPinToBoard(@PathVariable Long id, @PathVariable Long pinId) {
-        // Method stub for addPinToBoard
-    }
-
-    @DeleteMapping("/{id}/pins/{pinId}")
-    public void removePinFromBoard(@PathVariable Long id, @PathVariable Long pinId) {
-        // Method stub for removePinFromBoard
+    public ResponseEntity<?> deleteBoard(@PathVariable String id) {
+        try{
+            boardService.deleteBoard(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
